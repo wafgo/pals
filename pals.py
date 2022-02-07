@@ -3,11 +3,10 @@ import requests
 from datetime import datetime, timedelta
 import argparse
 import os
-print()
+
 __version__major = '0'
 __version__minor = '1'
 __version__ = __version__major + '.' + __version__minor
-
 
 try:
     default_app_id = os.environ['PALS_OWM_APP_ID']
@@ -57,7 +56,7 @@ utc_sunset = response['sys']['sunset']
 str_sunset = datetime.fromtimestamp(utc_sunset) + timedelta(minutes=30)
 
 with open(args.cronjob_file, "w") as ctfile:
-    ctfile.write(str(str_sunset.minute) + ' ' + str(str_sunset.hour) + ' * * * /usr/bin/curl -X PUT -i \'http://' + args.ip_address +'/api/' + args.deconz_app_id + '/groups/2/action\' --data \'{"on": true}\'\n')
+    ctfile.write(str(str_sunset.minute) + ' ' + str(str_sunset.hour) + ' * * * /usr/bin/python3 ' + os.path.dirname(os.path.abspath(__file__)) + '/' + 'stubborn_enable.py\n')
     ctfile.write('0 23 * * * /usr/bin/curl -X PUT -i \'http://' + args.ip_address + '/api/' + args.deconz_app_id + '/groups/2/action\' --data \'{"on": false}\'\n')
 
 
