@@ -56,7 +56,7 @@ utc_sunset = response['sys']['sunset']
 str_sunset = datetime.fromtimestamp(utc_sunset) + timedelta(minutes=30)
 
 with open(args.cronjob_file, "w") as ctfile:
-    ctfile.write(str(str_sunset.minute) + ' ' + str(str_sunset.hour) + ' * * * /usr/bin/python3 ' + os.path.dirname(os.path.abspath(__file__)) + '/' + 'stubborn_enable.py\n')
+    ctfile.write(str(str_sunset.minute) + ' ' + str(str_sunset.hour) + ' * * * source /home/root/.bashrc; /usr/bin/python3 ' + os.path.dirname(os.path.abspath(__file__)) + '/' + 'stubborn_enable.py\n')
     ctfile.write('0 23 * * * /usr/bin/curl -X PUT -i \'http://' + args.ip_address + '/api/' + args.deconz_app_id + '/groups/2/action\' --data \'{"on": false}\'\n')
 
 
